@@ -68,6 +68,7 @@ The Railtie provides these configuration options:
 * `outgoing_strategy` - default value of `:transform_underscore_to_camel`.
 * `outgoing_strategy_options` - no options set by default.
 * `skip_paths` - skip the transformation if HTTP request path matches. e.g. `[/^\/admin/, '/graphql']`
+* `should_skip_if` - skip the transformation if return true. called with Rack `env`. e.g. `->(env) { env['HTTP_SOME_HEADER'] == 'true' }`
 
 Here is an example Rails initializer which turns on the `outgoing_strategy_options.keep_lead_underscore` option:
 

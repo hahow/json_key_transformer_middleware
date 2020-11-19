@@ -10,6 +10,7 @@ module JsonKeyTransformerMiddleware
     config.json_key_transformer_middleware.outgoing_strategy = :transform_underscore_to_camel
     config.json_key_transformer_middleware.outgoing_strategy_options = ActiveSupport::OrderedOptions.new
     config.json_key_transformer_middleware.skip_paths = []
+    config.json_key_transformer_middleware.should_skip_if = nil
 
     config.app_middleware.insert_after(Rails::Rack::Logger, JsonKeyTransformerMiddleware::IncomingParamsFormatter, config.json_key_transformer_middleware)
     config.app_middleware.insert_after(Rails::Rack::Logger, JsonKeyTransformerMiddleware::IncomingJsonFormatter, config.json_key_transformer_middleware)
