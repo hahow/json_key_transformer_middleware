@@ -9,7 +9,7 @@ module JsonKeyTransformerMiddleware
     protected
 
     def should_skip?(env)
-      check_skip_paths(env) || check_should_skip_if(env)
+      check_skip_paths(env) || check_content_type(env) || check_should_skip_if(env)
     end
 
     def incoming_should_skip?(env)
@@ -37,6 +37,15 @@ module JsonKeyTransformerMiddleware
           skip_path.match? env['PATH_INFO']
         end
       end
+    end
+
+    def check_content_type(env)
+      return false unless middleware_config.check_content_type
+
+      request = Rack::Request.new(env)
+      return false if request.content_type.nil? # Do not skip if Content-Type is unknown
+
+      !%r{application/json}.match?(request.content_type)
     end
 
     def check_should_skip_if(env)
