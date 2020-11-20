@@ -12,6 +12,18 @@ module JsonKeyTransformerMiddleware
       check_skip_paths(env) || check_should_skip_if(env)
     end
 
+    def incoming_should_skip?(env)
+      return false unless middleware_config.should_skip_if.is_a? Proc
+
+      middleware_config.should_skip_if.call(env)
+    end
+
+    def outgoing_should_skip?(env)
+      return false unless middleware_config.should_skip_if.is_a? Proc
+
+      middleware_config.should_skip_if.call(env)
+    end
+
     private
 
     attr_reader :app, :middleware_config
