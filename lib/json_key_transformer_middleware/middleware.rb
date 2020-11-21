@@ -54,6 +54,22 @@ module JsonKeyTransformerMiddleware
       middleware_config.should_skip_if.call(env)
     end
 
+    def transform_incoming(object)
+      transform(object, middleware_config.incoming_strategy, middleware_config.incoming_strategy_options)
+    end
+
+    def transform_outgoing(object)
+      transform(object, middleware_config.outgoing_strategy, middleware_config.outgoing_strategy_options)
+    end
+
+    def transform(object, strategy, strategy_options)
+      if strategy.is_a? Proc
+        strategy.call(object)
+      else
+        HashKeyTransformer.send(strategy, object, strategy_options)
+      end
+    end
+
   end
 
 end
