@@ -28,7 +28,7 @@ module JsonKeyTransformerMiddleware
     def transform_outgoing_body_part(body_part)
       begin
         object = Oj.load(body_part)
-        transformed_object = HashKeyTransformer.send(middleware_config.outgoing_strategy, object, middleware_config.outgoing_strategy_options)
+        transformed_object = transform_outgoing(object)
         Oj.dump(transformed_object, mode: :compat)
       rescue
         body_part

@@ -8,7 +8,7 @@ module JsonKeyTransformerMiddleware
     def call(env)
       unless should_skip?(env) || incoming_should_skip?(env)
         object = Oj.load(env['rack.input'].read)
-        transformed_object = HashKeyTransformer.send(middleware_config.incoming_strategy, object, middleware_config.incoming_strategy_options)
+        transformed_object = transform_incoming(object)
         result = Oj.dump(transformed_object, mode: :compat)
 
         env['rack.input'] = StringIO.new(result)
