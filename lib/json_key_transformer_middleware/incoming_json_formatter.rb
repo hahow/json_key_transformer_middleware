@@ -13,7 +13,7 @@ module JsonKeyTransformerMiddleware
 
         env['rack.input'] = StringIO.new(result)
         # Rails uses this elsewhere to parse 'rack.input', it must be updated to avoid truncation
-        env['CONTENT_LENGTH'] = result.length.to_s
+        env['CONTENT_LENGTH'] = result.bytesize.to_s
       end
 
       @app.call(env)
