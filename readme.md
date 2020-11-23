@@ -71,6 +71,7 @@ The Railtie provides these configuration options:
 * `should_skip_if` - skip the transformation if return true. called with Rack `env`. e.g. `->(env) { env['HTTP_SOME_HEADER'] == 'true' }`
 * `incoming_should_skip_if` - like `should_skip_if` but only for skipping incoming params / json body
 * `outgoing_should_skip_if` - like `should_skip_if` but only for skipping outgoing json body
+* `check_content_type` - skip the transformation unless `Content-Type` contains `application/json` (defaults to `true`)
 
 Here is an example Rails initializer which turns on the `outgoing_strategy_options.keep_lead_underscore` option:
 
