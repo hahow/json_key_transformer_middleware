@@ -9,6 +9,26 @@ module JsonKeyTransformerMiddleware
     protected
 
     def should_skip?(env)
+      check_skip_paths(env) || check_should_skip_if(env)
+    end
+
+    def incoming_should_skip?(env)
+      return false unless middleware_config.should_skip_if.is_a? Proc
+
+      middleware_config.should_skip_if.call(env)
+    end
+
+    def outgoing_should_skip?(env)
+      return false unless middleware_config.should_skip_if.is_a? Proc
+
+      middleware_config.should_skip_if.call(env)
+    end
+
+    private
+
+    attr_reader :app, :middleware_config
+
+    def check_skip_paths(env)
       middleware_config.skip_paths.any? do |skip_path|
         case skip_path
         when String
@@ -19,9 +39,11 @@ module JsonKeyTransformerMiddleware
       end
     end
 
-    private
+    def check_should_skip_if(env)
+      return false unless middleware_config.should_skip_if.is_a? Proc
 
-    attr_reader :app, :middleware_config
+      middleware_config.should_skip_if.call(env)
+    end
 
   end
 
