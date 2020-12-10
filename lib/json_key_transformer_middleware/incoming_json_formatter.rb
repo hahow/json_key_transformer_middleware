@@ -6,7 +6,7 @@ module JsonKeyTransformerMiddleware
   class IncomingJsonFormatter < Middleware
 
     def call(env)
-      unless should_skip?(env) || incoming_should_skip?(env)
+      unless should_skip?(env) || middleware_config.incoming_should_skip_if.call(env)
         object = Oj.load(env['rack.input'].read)
         transformed_object = transform_incoming(object)
         result = Oj.dump(transformed_object, mode: :compat)
