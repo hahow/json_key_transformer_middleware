@@ -11,6 +11,8 @@ module JsonKeyTransformerMiddleware
     config.json_key_transformer_middleware.outgoing_strategy_options = ActiveSupport::OrderedOptions.new
     config.json_key_transformer_middleware.skip_paths = []
     config.json_key_transformer_middleware.should_skip_if = nil
+    config.json_key_transformer_middleware.incoming_should_skip_if = nil
+    config.json_key_transformer_middleware.outgoing_should_skip_if = nil
     config.json_key_transformer_middleware.check_content_type = true
 
     config.app_middleware.insert_after(Rails::Rack::Logger, JsonKeyTransformerMiddleware::IncomingParamsFormatter, config.json_key_transformer_middleware)

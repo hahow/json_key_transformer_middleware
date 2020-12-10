@@ -13,15 +13,15 @@ module JsonKeyTransformerMiddleware
     end
 
     def incoming_should_skip?(env)
-      return false unless middleware_config.should_skip_if.is_a? Proc
+      return false unless middleware_config.incoming_should_skip_if.is_a? Proc
 
-      middleware_config.should_skip_if.call(env)
+      middleware_config.incoming_should_skip_if.call(env)
     end
 
     def outgoing_should_skip?(env)
-      return false unless middleware_config.should_skip_if.is_a? Proc
+      return false unless middleware_config.outgoing_should_skip_if.is_a? Proc
 
-      middleware_config.should_skip_if.call(env)
+      middleware_config.outgoing_should_skip_if.call(env)
     end
 
     private
