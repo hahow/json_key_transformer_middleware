@@ -9,19 +9,7 @@ module JsonKeyTransformerMiddleware
     protected
 
     def should_skip?(env)
-      check_skip_paths(env) || check_content_type(env) || check_should_skip_if(env)
-    end
-
-    def incoming_should_skip?(env)
-      return false unless middleware_config.should_skip_if.is_a? Proc
-
-      middleware_config.should_skip_if.call(env)
-    end
-
-    def outgoing_should_skip?(env)
-      return false unless middleware_config.should_skip_if.is_a? Proc
-
-      middleware_config.should_skip_if.call(env)
+      check_skip_paths(env) || check_content_type(env) || middleware_config.should_skip_if.call(env)
     end
 
     private
@@ -46,12 +34,6 @@ module JsonKeyTransformerMiddleware
       return false if request.content_type.nil? # Do not skip if Content-Type is unknown
 
       !%r{application/json}.match?(request.content_type)
-    end
-
-    def check_should_skip_if(env)
-      return false unless middleware_config.should_skip_if.is_a? Proc
-
-      middleware_config.should_skip_if.call(env)
     end
 
     def transform_incoming(object)
