@@ -26,13 +26,16 @@ module JsonKeyTransformerMiddleware
     end
 
     def transform_outgoing_body_part(body_part)
+      object = nil
+
       begin
         object = Oj.load(body_part)
-        transformed_object = transform_outgoing(object)
-        Oj.dump(transformed_object, mode: :compat)
-      rescue
-        body_part
+      rescue Oj::ParseError # ignore HTML, CSV ...etc
+        return body_part
       end
+
+      transformed_object = transform_outgoing(object)
+      Oj.dump(transformed_object, mode: :compat)
     end
 
   end
